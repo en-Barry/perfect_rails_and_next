@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  db:
+    restart: always
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+    ports:
+      - 3306:3306
+
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - redis:/data
+
+  web: &web
+    restart: always
+    build: .
+    image: api:1.0.0
+    command: rails s -b 0.0.0.0 -p 4000
+    volumes:
+      - .:/api:cached
+      - bundle:/api/vendor/bundle
+      - node_modules:/api/node_modules
+      - rails_cache:/api/tmp/cache
+      - packs:/api/public/packs
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+      - redis
+    tmpfs:
+      - /tmp
+    user: root
+    working_dir: /api
+    environment:
+      BUNDLE_PATH: '/api/vendor/bundle'
+      BOOTSNAP_CACHE_DIR: '/api/vendor/bundle'
+      WD_INSTALL_DIR: '/usr/local/bin'
+      HISTFILE: '/api/log/.bash_history'
+      EDITOR: 'vi'
+      REDIS_URL: 'redis://redis:6379/'
+      RAILS_MASTER_KEY:
+volumes:
+  mysql:
+  bundle:
+  redis:
+  packs:
+  rails_cache:
+  node_modules:
