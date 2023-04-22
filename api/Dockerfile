@@ -17,7 +17,9 @@ RUN apk update && apk add --no-cache \
       libxml2-dev \
       libxslt-dev \
       libgcrypt-dev \
-      libffi-dev
+      libffi-dev \
+      mysql-dev \
+      mysql-client
 
 # Using Node.js v16.x(LTS)
 RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main nodejs
