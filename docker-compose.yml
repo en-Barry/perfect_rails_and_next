@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  db:
+    restart: always
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+    ports:
+      - 3306:3306
+
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - redis:/data
+
+  api: &api
+    restart: always
+    stdin_open: true
+    tty: true
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    image: api:1.0.0
+    command: rails s -b 0.0.0.0 -p 4000
+    volumes:
+      - ./api:/api
+      - bundle:/api/vendor/bundle
+      - node_modules_api:/api/node_modules
+      - rails_cache:/api/tmp/cache
+      - packs:/api/public/packs
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+      - redis
+    tmpfs:
+      - /tmp
+    user: root
+    environment:
+      BUNDLE_PATH: '/api/vendor/bundle'
+      BOOTSNAP_CACHE_DIR: '/api/vendor/bundle'
+      WD_INSTALL_DIR: '/usr/local/bin'
+      HISTFILE: '/api/log/.bash_history'
+      EDITOR: 'vi'
+      REDIS_URL: 'redis://redis:6379/'
+      RAILS_MASTER_KEY:
+
+  front:
+    build:
+      context: ./front/
+      dockerfile: Dockerfile
+    volumes:
+      - ./front/app:/usr/src/app
+      - node_modules_front:/front/node_modules
+    command: yarn dev --port 3080
+    ports:
+      - '3080:3080'
+
+volumes:
+  mysql:
+  bundle:
+  redis:
+  packs:
+  rails_cache:
+  node_modules_api:
+  node_modules_front:
