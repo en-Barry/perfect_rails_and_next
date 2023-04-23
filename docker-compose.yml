@@ -16,7 +16,7 @@ services:
     volumes:
       - redis:/data
 
-  web: &web
+  api: &api
     restart: always
     stdin_open: true
     tty: true
