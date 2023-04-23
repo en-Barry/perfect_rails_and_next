@@ -18,11 +18,15 @@ services:
 
   web: &web
     restart: always
-    build: .
+    stdin_open: true
+    tty: true
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
     image: api:1.0.0
     command: rails s -b 0.0.0.0 -p 4000
     volumes:
-      - .:/api:cached
+      - ./api:/api
       - bundle:/api/vendor/bundle
       - node_modules:/api/node_modules
       - rails_cache:/api/tmp/cache
@@ -35,7 +39,6 @@ services:
     tmpfs:
       - /tmp
     user: root
-    working_dir: /api
     environment:
       BUNDLE_PATH: '/api/vendor/bundle'
       BOOTSNAP_CACHE_DIR: '/api/vendor/bundle'
