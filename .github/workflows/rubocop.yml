@@ -5,10 +5,14 @@ on:
     branches:
       - feature/**
       - hotfix/**
+    paths:
+      - api/**
   pull_request:
     branches:
       - feature/**
       - hotfix/**
+    paths:
+      - api/**
 
 jobs:
   rubocop:
