@@ -15,23 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up Ruby and install dependencies
+      - name: Setup Ruby and Install Dependencies
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
           working-directory: ./api
           gem-cache: true
+        run: |
+          bundle config set path 'vendor/bundle'
+          bundle install --jobs=4 --retry=3 --path=vendor/bundle
+          bundle lock --add-platform x86_64-linux
 
       - name: Check Ruby version
         run: ruby --version
 
-      - name: Run rubocop
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            bundle exec rubocop
-          elif [ "${{ github.event_name }}" = "push" ]; then
-            git diff --name-only HEAD^ HEAD | grep '.rb$' | xargs bundle exec rubocop -a --force-exclusion
-          fi
+      - name: Run RuboCop
+        if: ${{ github.event_name == 'pull_request' }}
+        run: bundle exec rubocop
+
+      - name: Run RuboCop on changed files
+        if: ${{ github.event_name == 'push' }}
+        run: bundle exec rubocop --force-exclusion --parallel $(git diff --name-only HEAD^ HEAD | grep '.rb$')
