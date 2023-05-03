@@ -21,10 +21,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          working-directory: ./api
 
       - name: Install Dependencies
-        with:
-          working-directory: ./api
         run: |
           bundle config set path 'vendor/bundle'
           bundle install --jobs=4 --retry=3 --path=vendor/bundle
