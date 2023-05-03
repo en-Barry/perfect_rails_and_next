@@ -20,16 +20,14 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: 3.1.1
           bundler-cache: true
           working-directory: ./api
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          bundle lock --add-platform x86_64-linux
-          bundle install --jobs 4 --retry 3 --path vendor/bundle
-
-      - name: Check Ruby version
-        run: ruby --version
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
       - name: Run RuboCop
         if: ${{ github.event_name == 'pull_request' }}
