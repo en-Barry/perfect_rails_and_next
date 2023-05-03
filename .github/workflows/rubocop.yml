@@ -26,8 +26,8 @@ jobs:
       - name: Install Dependencies
         run: |
           bundle config set path 'vendor/bundle'
-          bundle install --jobs=4 --retry=3 --path=vendor/bundle
           bundle lock --add-platform x86_64-linux
+          bundle install --jobs=4 --retry=3 --path=vendor/bundle
 
       - name: Check Ruby version
         run: ruby --version
