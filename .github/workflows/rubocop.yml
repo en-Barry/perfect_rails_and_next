@@ -34,9 +34,9 @@ jobs:
         run: cd api && bundle config path vendor/bundle && bundle install --jobs 4 --retry 3
 
       - name: Run RuboCop on changed files
-        run: cd api && bundle exec rubocop --only-changed
+        run: cd api && bundle exec rubocop
         if: ${{ github.event_name == 'push' }}
 
       - name: Run RuboCop
-        run: cd api && bundle exec rubocop --only-changed
+        run: cd api && bundle exec rubocop
         if: ${{ github.event_name == 'pull_request' }}
