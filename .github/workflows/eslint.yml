@@ -25,6 +25,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: cd front && yarn install
+
       - name: Run ESLint
         run: cd front && yarn lint
         continue-on-error: true
