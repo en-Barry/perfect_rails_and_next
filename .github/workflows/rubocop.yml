@@ -2,8 +2,13 @@ name: Run rubocop
 
 on:
   pull_request:
-    paths:
-      - api/**
+    types:
+    - opened
+    - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   rubocop:
@@ -28,5 +33,10 @@ jobs:
       - name: Install dependencies
         run: cd api && bundle config path vendor/bundle && bundle install --jobs 4 --retry 3
 
-      - name: Run RuboCop
-        run: cd api && bundle exec rubocop
+      - name: Run rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          rubocop_version: gemfile
+          rubocop_extensions: rubocop-rails:gemfile
+          reporter: github-pr-review # Default is github-pr-check
+          working-directory: api
