@@ -1,9 +1,11 @@
 name: ESLint
 on:
   pull_request:
+    paths:
+        - '/front/**'
 
 jobs:
-  reviewdog:
+  eslint with reviewdog:
     runs-on: ubuntu-latest
     permissions:
       contents: read
