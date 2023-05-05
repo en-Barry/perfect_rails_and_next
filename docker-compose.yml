@@ -48,16 +48,18 @@ services:
       REDIS_URL: 'redis://redis:6379/'
       RAILS_MASTER_KEY:
 
-  front:
-    build:
-      context: ./front/
-      dockerfile: Dockerfile
-    volumes:
-      - ./front/app:/usr/src/app
-      - node_modules_front:/front/node_modules
-    command: yarn dev --port 3080
-    ports:
-      - '3080:3080'
+  # front:
+  #   build:
+  #     context: ./front/
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./front/app:/usr/src/app
+  #     - node_modules_front:/front/node_modules
+  #   environment:
+  #     - WATCHPACK_POLLING=true
+  #   command: yarn dev --port 3080
+  #   ports:
+  #     - '3080:3080'
 
 volumes:
   mysql:
@@ -66,4 +68,4 @@ volumes:
   packs:
   rails_cache:
   node_modules_api:
-  node_modules_front:
+  # node_modules_front:
