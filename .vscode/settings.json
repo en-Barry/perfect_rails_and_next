@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["tailwindcss", "workdir"]
+  "cSpell.words": ["tailwindcss", "workdir"],
+  "eslint.workingDirectories": ["./front"]
 }
