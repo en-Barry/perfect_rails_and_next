@@ -1,0 +1,6 @@
+inherit_from: .rubocop_todo.yml
+
+# 本家Railsの設定を使用する
+inherit_gem:
+  rubocop-rails_config:
+    - config/rails.yml
