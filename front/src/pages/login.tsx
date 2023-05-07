@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { auth } from "../lib/firebase/initAuth";
 import Input from "./components/form/input";
+import GitHubAuthButton from "./components/githubAuthButton";
 
 const Login = () => {
   const router = useRouter();
@@ -59,9 +60,14 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <button className="text-2xl mt-4">Login</button>
+          <button className="text-2xl mt-4 mb-4">Login</button>
         </form>
         {error && <p>{error}</p>}
+        <div>
+          <div className="mt-2 mb-4">
+            <GitHubAuthButton />
+          </div>
+        </div>
         <p className="text-2xl mt-4">
           <Link href="/">Back to Top</Link>
         </p>
