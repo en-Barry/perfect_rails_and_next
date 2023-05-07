@@ -3,7 +3,7 @@
 firebase authのGitHub認証を使う
 */
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { auth } from "../lib/firebase/initAuth";
 import Input from "./components/form/input";
 
-const Login = () => {
+const Signup = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,23 +21,22 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       router.push("/");
     } catch (err) {
       setError((err as Error).message);
-      alert("ログインに失敗しました。メールアドレスとパスワードを確認してください。");
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
-        <title>Login</title>
+        <title>Sign up</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <h1 className="text-6xl font-bold">
-          Welcome to <a href="https://nextjs.org">Login</a>
+          Welcome to <a href="https://nextjs.org">Sign up</a>
         </h1>
         <form
           onSubmit={handleSubmit}
@@ -59,7 +58,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <button className="text-2xl mt-4">Login</button>
+          <button className="text-2xl mt-4">Sing up</button>
         </form>
         {error && <p>{error}</p>}
         <p className="text-2xl mt-4">
@@ -70,4 +69,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
