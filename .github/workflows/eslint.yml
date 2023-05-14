@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  eslint with reviewdog:
+  eslint-with-reviewdog:
     runs-on: ubuntu-latest
     permissions:
       contents: read
